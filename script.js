@@ -148,58 +148,58 @@ const blogData = {
     works: [
         {
             id: 1,
-            title: '数字山水',
-            description: '基于算法生成的山水画作品，探索东方美学与数字技术的融合',
-            image: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            title: '数字山水 #1',
+            description: '基于深度学习的算法生成山水画系列，探索东方美学与数字技术的边界。作品通过分析数千幅古典山水画的笔触、构图和意境，重新诠释传统山水在数字时代的新表达。',
+            image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2024'
         },
         {
             id: 2,
             title: '时间碎片',
-            description: '交互式时间可视化装置，展现时间的流动与静止',
-            image: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            description: '交互式时间可视化装置，将无形的时间流动转化为有形的视觉碎片。观众可以通过手势与时间对话，感受过去、现在与未来的交织重叠。',
+            image: 'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2024'
         },
         {
             id: 3,
             title: '声音雕塑',
-            description: '将音频数据转化为三维形态的生成艺术作品',
-            image: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+            description: '将城市环境音频数据转化为三维形态的生成艺术作品。每个时间段的声音特征被映射为独特的空间结构，创造了一个可以"看见"声音的沉浸式体验。',
+            image: 'https://images.unsplash.com/photo-1579546929518-9e396f3a7a55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2023'
         },
         {
             id: 4,
             title: '文字迷宫',
-            description: '基于文字游戏的空间化叙事实验',
-            image: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+            description: '基于诗歌和文字游戏的空间化叙事实验。观众在由文字构成的迷宫中穿行，每一次选择都会生成独特的故事路径，重新定义阅读与空间的关系。',
+            image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2023'
         },
         {
             id: 5,
             title: '城市回响',
-            description: '城市声音数据的可视化与听觉化双重呈现',
-            image: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+            description: '城市声音数据的可视化与听觉化双重呈现。通过收集北京、上海、纽约等大都市的城市脉搏，将都市生活的韵律转化为抽象的视觉与听觉交响曲。',
+            image: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2023'
         },
         {
             id: 6,
             title: '记忆地图',
-            description: '个人记忆的地理信息系统重构',
-            image: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+            description: '个人记忆的地理信息系统重构。通过访谈和收集不同人的生活故事，将抽象的记忆片段转化为可视化的地理坐标，构建一个集体记忆的数字档案。',
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2022'
         },
         {
             id: 7,
             title: '光之诗',
-            description: '光影交互装置，捕捉自然光的诗意表达',
-            image: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
+            description: '光影交互装置，捕捉自然光的诗意表达。作品通过精密的光学传感器和投影系统，将每天不同时刻的自然光转化为独特的视觉诗篇。',
+            image: 'https://images.unsplash.com/photo-1477328788402-6c5f6e60d4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2022'
         },
         {
             id: 8,
             title: '算法书法',
-            description: '机器学习与传统书法艺术的跨界实验',
-            image: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
+            description: '机器学习与传统书法艺术的跨界实验。通过训练神经网络学习历代书法大师的笔迹风格，探索人工智能在传统艺术创作中的可能性与局限性。',
+            image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             year: '2022'
         }
     ]
@@ -371,7 +371,10 @@ function renderPostsList() {
         // 从新到旧
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
         currentFilterElement.textContent = '时间排序：从新到旧';
-        let html = '';
+        let html = `
+            <div class="category-section">
+                <div class="posts-list">
+        `;
         posts.forEach(post => {
             html += `
                 <article class="post-item" onclick="openArticle(${post.id})">
@@ -380,12 +383,19 @@ function renderPostsList() {
                 </article>
             `;
         });
+        html += `
+                </div>
+            </div>
+        `;
         postsList.innerHTML = html;
     } else if (currentSort === 'date-asc') {
         // 从旧到新
         posts.sort((a, b) => new Date(a.date) - new Date(b.date));
         currentFilterElement.textContent = '时间排序：从旧到新';
-        let html = '';
+        let html = `
+            <div class="category-section">
+                <div class="posts-list">
+        `;
         posts.forEach(post => {
             html += `
                 <article class="post-item" onclick="openArticle(${post.id})">
@@ -394,6 +404,10 @@ function renderPostsList() {
                 </article>
             `;
         });
+        html += `
+                </div>
+            </div>
+        `;
         postsList.innerHTML = html;
     } else if (currentSort === 'category') {
         // 按分类分组
@@ -449,9 +463,10 @@ function renderWorksGrid() {
     blogData.works.forEach(work => {
         html += `
             <div class="work-item" onclick="openWork(${work.id})">
-                <div class="work-image" style="background: ${work.image}"></div>
+                <img class="work-image" src="${work.image}" alt="${work.title}" loading="lazy">
                 <div class="work-overlay">
                     <h3 class="work-title">${work.title}</h3>
+                    <p class="work-description">${work.description}</p>
                 </div>
             </div>
         `;
