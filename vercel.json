@@ -1,13 +1,19 @@
 {
   "version": 2,
   "name": "yungs-blog",
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/styles.css",
+      "dest": "/styles.css"
+    },
+    {
+      "src": "/script.js",
+      "dest": "/script.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
