@@ -298,6 +298,10 @@ function setupEventListeners() {
     searchClose.addEventListener('click', closeSearch);
     searchInput.addEventListener('input', handleSearch);
 
+    // 搜索分类变化时重新搜索
+    document.getElementById('search-articles').addEventListener('change', handleSearch);
+    document.getElementById('search-works').addEventListener('change', handleSearch);
+
     // 点击搜索模态框外部关闭
     searchModal.addEventListener('click', function(e) {
         if (e.target === searchModal) {
@@ -570,24 +574,33 @@ function closeSearch() {
 // 处理搜索
 function handleSearch() {
     const query = searchInput.value.toLowerCase().trim();
+    const includeArticles = document.getElementById('search-articles').checked;
+    const includeWorks = document.getElementById('search-works').checked;
 
     if (query === '') {
         searchResults.innerHTML = '';
         return;
     }
 
+    let articleResults = [];
+    let workResults = [];
+
     // 搜索文章
-    const articleResults = blogData.allArticles.filter(article =>
-        article.title.toLowerCase().includes(query) ||
-        article.summary.toLowerCase().includes(query) ||
-        categories[article.category].toLowerCase().includes(query)
-    );
+    if (includeArticles) {
+        articleResults = blogData.allArticles.filter(article =>
+            article.title.toLowerCase().includes(query) ||
+            article.summary.toLowerCase().includes(query) ||
+            categories[article.category].toLowerCase().includes(query)
+        );
+    }
 
     // 搜索作品
-    const workResults = blogData.works.filter(work =>
-        work.title.toLowerCase().includes(query) ||
-        work.description.toLowerCase().includes(query)
-    );
+    if (includeWorks) {
+        workResults = blogData.works.filter(work =>
+            work.title.toLowerCase().includes(query) ||
+            work.description.toLowerCase().includes(query)
+        );
+    }
 
     let html = '';
 
@@ -618,7 +631,11 @@ function handleSearch() {
     }
 
     if (articleResults.length === 0 && workResults.length === 0) {
-        html = '<div class="search-result-item">没有找到相关内容</div>';
+        if (!includeArticles && !includeWorks) {
+            html = '<div class="search-result-item">请选择至少一个搜索类别</div>';
+        } else {
+            html = '<div class="search-result-item">没有找到相关内容</div>';
+        }
     }
 
     searchResults.innerHTML = html;

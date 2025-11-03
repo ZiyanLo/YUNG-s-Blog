@@ -48,8 +48,20 @@
     <!-- 搜索模态框 -->
     <div class="search-modal" id="search-modal">
         <div class="search-content">
-            <input type="text" class="search-input" id="search-input" placeholder="搜索文章或作品..." autocomplete="off">
-            <button class="search-close" id="search-close">&times;</button>
+            <div class="search-header">
+                <input type="text" class="search-input" id="search-input" placeholder="搜索..." autocomplete="off">
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-filters">
+                <label class="search-filter">
+                    <input type="checkbox" id="search-articles" checked>
+                    <span class="filter-text">文章</span>
+                </label>
+                <label class="search-filter">
+                    <input type="checkbox" id="search-works" checked>
+                    <span class="filter-text">作品</span>
+                </label>
+            </div>
             <div class="search-results" id="search-results"></div>
         </div>
     </div>
@@ -60,13 +72,13 @@
             <!-- Posts 页面 -->
             <div class="page-content" id="posts-page">
                 <div class="posts-header">
-                    <div class="current-filter">
-                        <span id="current-filter">时间排序：从新到旧</span>
-                    </div>
                     <div class="posts-controls">
                         <button class="sort-btn active" data-sort="date-desc">从新到旧</button>
                         <button class="sort-btn" data-sort="date-asc">从旧到新</button>
                         <button class="sort-btn" data-sort="category">按分类</button>
+                        <div class="current-filter">
+                            <span id="current-filter">时间排序：从新到旧</span>
+                        </div>
                     </div>
                 </div>
                 <div class="posts-list" id="posts-list">
