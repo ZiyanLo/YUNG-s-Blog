@@ -1,0 +1,20 @@
+{
+  "name": "yungs-blog",
+  "version": "1.0.0",
+  "description": "A minimalist personal blog with Posts, Works, and About sections",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "blog",
+    "minimalist",
+    "personal",
+    "portfolio"
+  ],
+  "author": "YUNG",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
