@@ -1,3 +1,6 @@
+/* 字体 - 更文艺清新的选择 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap');
+
 /* 极简主义样式重置 */
 * {
     margin: 0;
@@ -15,8 +18,9 @@
     --border: #e5e5e5;
     --border-light: #f0f0f0;
     --max-width: 680px;
-    --header-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --body-font: 'Crimson Text', Georgia, serif;
+    --header-font: 'Playfair Display', 'Georgia', serif;
+    --body-font: 'Lora', 'Georgia', serif;
+    --ui-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --transition-speed: 0.3s;
 }
 
@@ -66,12 +70,14 @@ body {
 
 .logo h1 {
     font-family: var(--header-font);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 500;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
     cursor: pointer;
     transition: opacity var(--transition-speed);
+    margin-left: -10px;
+    font-style: italic;
 }
 
 .logo h1:hover {
@@ -84,7 +90,7 @@ body {
 }
 
 .nav-link {
-    font-family: var(--header-font);
+    font-family: var(--ui-font);
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.9rem;
@@ -101,6 +107,7 @@ body {
     display: flex;
     gap: 1rem;
     align-items: center;
+    margin-right: -10px;
 }
 
 .search-btn,
@@ -186,6 +193,22 @@ body {
     border-top: 1px solid var(--border);
 }
 
+.search-section {
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+    margin-top: 0.5rem;
+}
+
+.search-section:first-child {
+    margin-top: 0;
+}
+
 .search-result-item {
     padding: 1rem;
     cursor: pointer;
@@ -234,13 +257,22 @@ body {
     margin-bottom: 2rem;
 }
 
+.current-filter {
+    font-family: var(--ui-font);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
 .posts-controls {
     display: flex;
     gap: 0.5rem;
 }
 
 .sort-btn {
-    font-family: var(--header-font);
+    font-family: var(--ui-font);
     background: none;
     border: 1px solid var(--border);
     color: var(--text-secondary);
@@ -305,7 +337,16 @@ body {
 
 /* 分类视图 */
 .category-section {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+}
+
+.category-header {
+    cursor: pointer;
+    transition: opacity var(--transition-speed);
+}
+
+.category-header:hover {
+    opacity: 0.8;
 }
 
 .category-title {
@@ -313,22 +354,41 @@ body {
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-arrow {
+    font-size: 0.8rem;
+    transition: transform var(--transition-speed);
+}
+
+.category-count {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-family: var(--ui-font);
+}
+
+.category-content {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
 }
 
 /* Works 页面样式 */
 .works-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
     padding: 1rem 0;
 }
 
 .work-item {
     position: relative;
-    aspect-ratio: 1;
+    aspect-ratio: 4/3;
     overflow: hidden;
     border-radius: 4px;
     cursor: pointer;
@@ -338,8 +398,8 @@ body {
 }
 
 .work-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .work-image {
@@ -350,6 +410,11 @@ body {
                 linear-gradient(45deg, var(--border-light) 25%, transparent 25%, transparent 75%, var(--border-light) 75%, var(--border-light));
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
+    transition: transform var(--transition-speed);
+}
+
+.work-item:hover .work-image {
+    transform: scale(1.02);
 }
 
 .work-overlay {
@@ -357,16 +422,22 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
     color: white;
-    padding: 1rem;
-    transition: opacity var(--transition-speed);
+    padding: 1rem 0.8rem 0.8rem;
+    opacity: 1;
+    transition: all var(--transition-speed);
+}
+
+.work-item:hover .work-overlay {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
 }
 
 .work-title {
     font-family: var(--header-font);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
 }
 
 /* About 页面样式 */

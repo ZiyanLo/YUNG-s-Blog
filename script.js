@@ -243,7 +243,7 @@ const moonIcon = themeToggle.querySelector('.moon-icon');
 
 // 当前状态
 let currentPage = 'posts';
-let currentSort = 'date';
+let currentSort = 'date-desc';
 let isDarkMode = false;
 
 // 初始化应用
@@ -365,10 +365,12 @@ function renderCurrentPage() {
 // 渲染Posts列表
 function renderPostsList() {
     let posts = [...blogData.allArticles];
+    const currentFilterElement = document.getElementById('current-filter');
 
-    if (currentSort === 'date') {
+    if (currentSort === 'date-desc') {
+        // 从新到旧
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+        currentFilterElement.textContent = '时间排序：从新到旧';
         let html = '';
         posts.forEach(post => {
             html += `
@@ -378,10 +380,24 @@ function renderPostsList() {
                 </article>
             `;
         });
-
+        postsList.innerHTML = html;
+    } else if (currentSort === 'date-asc') {
+        // 从旧到新
+        posts.sort((a, b) => new Date(a.date) - new Date(b.date));
+        currentFilterElement.textContent = '时间排序：从旧到新';
+        let html = '';
+        posts.forEach(post => {
+            html += `
+                <article class="post-item" onclick="openArticle(${post.id})">
+                    <h3 class="post-item-title">${post.title}</h3>
+                    <span class="post-item-date">${formatDate(post.date)}</span>
+                </article>
+            `;
+        });
         postsList.innerHTML = html;
     } else if (currentSort === 'category') {
         // 按分类分组
+        currentFilterElement.textContent = '分类浏览：点击展开查看分类';
         const postsByCategory = {};
         posts.forEach(post => {
             if (!postsByCategory[post.category]) {
@@ -396,9 +412,16 @@ function renderPostsList() {
 
             html += `
                 <div class="category-section">
-                    <h2 class="category-title">${categories[category]}</h2>
-                    <div class="posts-list">
-            `;
+                    <div class="category-header" onclick="toggleCategory('${category}')">
+                        <h2 class="category-title">
+                            <span class="category-arrow">▶</span>
+                            ${categories[category]}
+                            <span class="category-count">(${categoryPosts.length})</span>
+                        </h2>
+                    </div>
+                    <div class="category-content" id="category-${category}" style="display: none;">
+                        <div class="posts-list">
+                `;
 
             categoryPosts.forEach(post => {
                 html += `
@@ -410,6 +433,7 @@ function renderPostsList() {
             });
 
             html += `
+                        </div>
                     </div>
                 </div>
             `;
@@ -444,6 +468,21 @@ function formatDate(dateString) {
     const year = date.getFullYear();
 
     return `${year}年${month}月${day}日`;
+}
+
+// 切换分类展开/收起
+function toggleCategory(categoryId) {
+    const categoryContent = document.getElementById(`category-${categoryId}`);
+    const categorySection = categoryContent.closest('.category-section');
+    const arrow = categorySection.querySelector('.category-arrow');
+
+    if (categoryContent.style.display === 'none') {
+        categoryContent.style.display = 'block';
+        arrow.textContent = '▼';
+    } else {
+        categoryContent.style.display = 'none';
+        arrow.textContent = '▶';
+    }
 }
 
 // 打开文章详情
@@ -522,17 +561,25 @@ function handleSearch() {
         return;
     }
 
-    const results = blogData.allArticles.filter(article =>
+    // 搜索文章
+    const articleResults = blogData.allArticles.filter(article =>
         article.title.toLowerCase().includes(query) ||
         article.summary.toLowerCase().includes(query) ||
         categories[article.category].toLowerCase().includes(query)
     );
 
+    // 搜索作品
+    const workResults = blogData.works.filter(work =>
+        work.title.toLowerCase().includes(query) ||
+        work.description.toLowerCase().includes(query)
+    );
+
     let html = '';
-    if (results.length === 0) {
-        html = '<div class="search-result-item">没有找到相关文章</div>';
-    } else {
-        results.forEach(result => {
+
+    // 显示文章结果
+    if (articleResults.length > 0) {
+        html += '<div class="search-section">文章</div>';
+        articleResults.forEach(result => {
             html += `
                 <div class="search-result-item" onclick="selectSearchResult(${result.id})">
                     <div class="search-result-title">${result.title}</div>
@@ -540,6 +587,23 @@ function handleSearch() {
                 </div>
             `;
         });
+    }
+
+    // 显示作品结果
+    if (workResults.length > 0) {
+        html += '<div class="search-section">作品</div>';
+        workResults.forEach(result => {
+            html += `
+                <div class="search-result-item" onclick="selectWorkResult(${result.id})">
+                    <div class="search-result-title">${result.title}</div>
+                    <div class="search-result-date">${result.year}</div>
+                </div>
+            `;
+        });
+    }
+
+    if (articleResults.length === 0 && workResults.length === 0) {
+        html = '<div class="search-result-item">没有找到相关内容</div>';
     }
 
     searchResults.innerHTML = html;
@@ -550,6 +614,13 @@ function selectSearchResult(articleId) {
     closeSearch();
     navigateToPage('posts');
     setTimeout(() => openArticle(articleId), 100);
+}
+
+// 选择作品搜索结果
+function selectWorkResult(workId) {
+    closeSearch();
+    navigateToPage('works');
+    setTimeout(() => openWork(workId), 100);
 }
 
 // 切换主题
