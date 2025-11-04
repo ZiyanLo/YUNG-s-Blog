@@ -553,56 +553,28 @@ function renderPostsList() {
     let posts = [...blogData.allArticles];
 
     if (currentSort === 'date-desc') {
-        // 从新到旧 - 按年月分组
+        // 从新到旧
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const groupedByMonth = groupPostsByMonth(posts);
         let html = '';
-
-        Object.keys(groupedByMonth).forEach(monthKey => {
-            const monthPosts = groupedByMonth[monthKey];
+        posts.forEach(post => {
             html += `
-                <div class="time-group">
-                    <h2 class="time-group-title">${monthKey}</h2>
-                    <div class="posts-list">
-            `;
-            monthPosts.forEach(post => {
-                html += `
-                    <article class="post-item" onclick="openArticle(${post.id})">
-                        <h3 class="post-item-title">${post.title}</h3>
-                        <span class="post-item-date">${formatDate(post.date)}</span>
-                    </article>
-                `;
-            });
-            html += `
-                    </div>
-                </div>
+                <article class="post-item" onclick="openArticle(${post.id})">
+                    <h3 class="post-item-title">${post.title}</h3>
+                    <span class="post-item-date">${formatDate(post.date)}</span>
+                </article>
             `;
         });
         postsList.innerHTML = html;
     } else if (currentSort === 'date-asc') {
-        // 从旧到新 - 按年月分组
+        // 从旧到新
         posts.sort((a, b) => new Date(a.date) - new Date(b.date));
-        const groupedByMonth = groupPostsByMonth(posts);
         let html = '';
-
-        Object.keys(groupedByMonth).forEach(monthKey => {
-            const monthPosts = groupedByMonth[monthKey];
+        posts.forEach(post => {
             html += `
-                <div class="time-group">
-                    <h2 class="time-group-title">${monthKey}</h2>
-                    <div class="posts-list">
-            `;
-            monthPosts.forEach(post => {
-                html += `
-                    <article class="post-item" onclick="openArticle(${post.id})">
-                        <h3 class="post-item-title">${post.title}</h3>
-                        <span class="post-item-date">${formatDate(post.date)}</span>
-                    </article>
-                `;
-            });
-            html += `
-                    </div>
-                </div>
+                <article class="post-item" onclick="openArticle(${post.id})">
+                    <h3 class="post-item-title">${post.title}</h3>
+                    <span class="post-item-date">${formatDate(post.date)}</span>
+                </article>
             `;
         });
         postsList.innerHTML = html;
@@ -681,24 +653,6 @@ function formatDate(dateString) {
     return `${year}年${month}月${day}日`;
 }
 
-// 按年月分组文章
-function groupPostsByMonth(posts) {
-    const grouped = {};
-
-    posts.forEach(post => {
-        const date = new Date(post.date);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const monthKey = `${year}年${month}月`;
-
-        if (!grouped[monthKey]) {
-            grouped[monthKey] = [];
-        }
-        grouped[monthKey].push(post);
-    });
-
-    return grouped;
-}
 
 // 切换分类展开/收起
 function toggleCategory(categoryId) {

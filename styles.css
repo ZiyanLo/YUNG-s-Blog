@@ -332,20 +332,21 @@ body {
 
 /* Posts 页面样式 */
 .posts-header {
-    position: sticky;
+    position: fixed;
     top: 60px;
-    background-color: var(--sticky-background);
+    left: 0;
+    right: 0;
+    background-color: var(--background);
     z-index: 10;
-    padding: 1rem 0;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin: 0;
+    border-bottom: 1px solid var(--border-light);
 }
 
-[data-theme="dark"] .posts-header {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+.posts-controls {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
 }
 
 .posts-controls {
@@ -356,30 +357,27 @@ body {
 .sort-btn {
     font-family: var(--ui-font);
     background: none;
-    border: 1px solid var(--border);
+    border: none;
     color: var(--text-secondary);
     padding: 0.4rem 0.8rem;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
-    transition: all var(--transition-speed);
+    transition: color var(--transition-speed);
 }
 
 .sort-btn:hover {
     color: var(--text-primary);
-    border-color: var(--text-secondary);
 }
 
 .sort-btn.active {
-    background-color: var(--text-primary);
-    color: var(--background);
-    border-color: var(--text-primary);
+    color: var(--text-primary);
 }
 
 .posts-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-top: 60px;
 }
 
 .post-item {
@@ -417,25 +415,14 @@ body {
     white-space: nowrap;
 }
 
-/* 时间分组样式 */
-.time-group {
-    margin-bottom: 2.5rem;
-}
-
-.time-group-title {
-    font-family: var(--header-font);
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border);
-    letter-spacing: 0.02em;
-}
 
 /* 分类视图 */
 .category-section {
     margin-bottom: 2rem;
+}
+
+.category-section:first-child {
+    margin-top: 3rem;
 }
 
 .category-header {
