@@ -369,12 +369,10 @@ function renderCurrentPage() {
 // 渲染Posts列表
 function renderPostsList() {
     let posts = [...blogData.allArticles];
-    const currentFilterElement = document.getElementById('current-filter');
 
     if (currentSort === 'date-desc') {
         // 从新到旧
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        currentFilterElement.textContent = '时间排序：从新到旧';
         let html = `
             <div class="category-section">
                 <div class="posts-list">
@@ -395,7 +393,6 @@ function renderPostsList() {
     } else if (currentSort === 'date-asc') {
         // 从旧到新
         posts.sort((a, b) => new Date(a.date) - new Date(b.date));
-        currentFilterElement.textContent = '时间排序：从旧到新';
         let html = `
             <div class="category-section">
                 <div class="posts-list">
@@ -415,7 +412,6 @@ function renderPostsList() {
         postsList.innerHTML = html;
     } else if (currentSort === 'category') {
         // 按分类分组
-        currentFilterElement.textContent = '分类浏览：点击展开查看分类';
         const postsByCategory = {};
         posts.forEach(post => {
             if (!postsByCategory[post.category]) {

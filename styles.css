@@ -96,6 +96,11 @@ body {
     font-size: 0.9rem;
     font-weight: 400;
     transition: color var(--transition-speed);
+    outline: none;
+}
+
+.nav-link:focus {
+    outline: none;
 }
 
 .nav-link:hover,
@@ -137,7 +142,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
     z-index: 1000;
     display: none;
     align-items: flex-start;
@@ -148,12 +154,13 @@ body {
 .search-content {
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     width: 100%;
     max-width: 600px;
     margin: 0 1rem;
     position: relative;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 .search-header {
@@ -172,11 +179,18 @@ body {
     font-size: 1.3rem;
     color: var(--text-primary);
     outline: none;
+    box-shadow: none;
 }
 
 .search-input::placeholder {
     color: var(--text-light);
     font-style: italic;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
 }
 
 .search-close {
@@ -319,19 +333,6 @@ body {
 .posts-controls {
     display: flex;
     gap: 0.5rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.current-filter {
-    font-family: var(--ui-font);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--surface);
-    border-radius: 4px;
-    border: 1px solid var(--border-light);
 }
 
 .sort-btn {
