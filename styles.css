@@ -263,6 +263,9 @@ body {
 .search-results {
     max-height: 300px;
     overflow-y: auto;
+}
+
+.search-results:not(:empty) {
     border-top: 1px solid var(--border);
 }
 
