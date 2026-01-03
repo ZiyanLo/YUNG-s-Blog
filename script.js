@@ -387,19 +387,25 @@ const blogData = {
     ]
 };
 
-// 分类信息
-const categories = {
-    tech: '科技',
-    art: '艺术',
-    life: '生活',
-    philosophy: '哲学'
-};
+// 动态分类名称
+function getCategoryName(category) {
+    const categories = {
+        tech: '科技',
+        art: '艺术',
+        life: '生活',
+        philosophy: '哲学'
+    };
+    return categories[category] || category;
+}
+
 
 // DOM元素
 const blogTitle = document.getElementById('blog-title');
 const navLinks = document.querySelectorAll('.nav-link');
 const postsPage = document.getElementById('posts-page');
 const worksPage = document.getElementById('works-page');
+const mediaPage = document.getElementById('media-page');
+const toolsPage = document.getElementById('tools-page');
 const aboutPage = document.getElementById('about-page');
 const articleDetail = document.getElementById('article-detail');
 const backButton = document.getElementById('back-button');
@@ -410,6 +416,10 @@ const postsList = document.getElementById('posts-list');
 
 // Works页面元素
 const worksGrid = document.getElementById('works-grid');
+
+// 新页面元素
+const mediaGrid = document.getElementById('media-grid');
+const toolsGrid = document.getElementById('tools-grid');
 
 // 搜索元素
 const searchBtn = document.getElementById('search-btn');
@@ -530,6 +540,8 @@ function renderCurrentPage() {
     // 隐藏所有页面
     postsPage.classList.add('hidden');
     worksPage.classList.add('hidden');
+    mediaPage.classList.add('hidden');
+    toolsPage.classList.add('hidden');
     aboutPage.classList.add('hidden');
 
     // 显示当前页面
@@ -541,6 +553,14 @@ function renderCurrentPage() {
         case 'works':
             worksPage.classList.remove('hidden');
             renderWorksGrid();
+            break;
+        case 'media':
+            mediaPage.classList.remove('hidden');
+            renderMediaGrid();
+            break;
+        case 'tools':
+            toolsPage.classList.remove('hidden');
+            renderToolsGrid();
             break;
         case 'about':
             aboutPage.classList.remove('hidden');
@@ -559,8 +579,9 @@ function renderPostsList() {
         posts.forEach(post => {
             html += `
                 <article class="post-item" onclick="openArticle(${post.id})">
-                    <h3 class="post-item-title">${post.title}</h3>
                     <span class="post-item-date">${formatDate(post.date)}</span>
+                    <h3 class="post-item-title">${post.title}</h3>
+                    <span class="post-item-category">${getCategoryName(post.category)}</span>
                 </article>
             `;
         });
@@ -572,8 +593,9 @@ function renderPostsList() {
         posts.forEach(post => {
             html += `
                 <article class="post-item" onclick="openArticle(${post.id})">
-                    <h3 class="post-item-title">${post.title}</h3>
                     <span class="post-item-date">${formatDate(post.date)}</span>
+                    <h3 class="post-item-title">${post.title}</h3>
+                    <span class="post-item-category">${getCategoryName(post.category)}</span>
                 </article>
             `;
         });
@@ -597,7 +619,7 @@ function renderPostsList() {
                     <div class="category-header" onclick="toggleCategory('${category}')">
                         <h2 class="category-title">
                             <span class="category-arrow">▶</span>
-                            ${categories[category]}
+                            ${getCategoryName(category)}
                             <span class="category-count">(${categoryPosts.length})</span>
                         </h2>
                     </div>
@@ -608,8 +630,9 @@ function renderPostsList() {
             categoryPosts.forEach(post => {
                 html += `
                     <article class="post-item" onclick="openArticle(${post.id})">
-                        <h3 class="post-item-title">${post.title}</h3>
                         <span class="post-item-date">${formatDate(post.date)}</span>
+                        <h3 class="post-item-title">${post.title}</h3>
+                        <span class="post-item-category">${getCategoryName(post.category)}</span>
                     </article>
                 `;
             });
@@ -676,7 +699,7 @@ function openArticle(articleId) {
 
     // 填充文章详情内容
     document.getElementById('detail-title').textContent = article.title;
-    document.getElementById('detail-category').textContent = categories[article.category];
+    document.getElementById('detail-category').textContent = getCategoryName(article.category);
     document.getElementById('detail-time').textContent = formatDate(article.date);
     document.getElementById('detail-content').innerHTML = article.content;
     document.getElementById('detail-source').textContent = `来源: ${article.source}`;
@@ -755,7 +778,7 @@ function handleSearch() {
         articleResults = blogData.allArticles.filter(article =>
             article.title.toLowerCase().includes(query) ||
             article.summary.toLowerCase().includes(query) ||
-            categories[article.category].toLowerCase().includes(query)
+            getCategoryName(article.category).toLowerCase().includes(query)
         );
     }
 
@@ -771,11 +794,11 @@ function handleSearch() {
 
     // 显示文章结果
     if (articleResults.length > 0) {
-        html += '<div class="search-section">文章</div>';
+        html += `<div class="search-section">${'文章'}</div>`;
         articleResults.forEach(result => {
             html += `
                 <div class="search-result-item" onclick="selectSearchResult(${result.id})">
-                    <div class="search-result-title">${result.title}</div>
+                    <div class="search-result-title">${getText(result.title)}</div>
                     <div class="search-result-date">${formatDate(result.date)}</div>
                 </div>
             `;
@@ -784,11 +807,11 @@ function handleSearch() {
 
     // 显示作品结果
     if (workResults.length > 0) {
-        html += '<div class="search-section">作品</div>';
+        html += `<div class="search-section">${'作品'}</div>`;
         workResults.forEach(result => {
             html += `
                 <div class="search-result-item" onclick="selectWorkResult(${result.id})">
-                    <div class="search-result-title">${result.title}</div>
+                    <div class="search-result-title">${getText(result.title)}</div>
                     <div class="search-result-date">${result.year}</div>
                 </div>
             `;
@@ -797,9 +820,9 @@ function handleSearch() {
 
     if (articleResults.length === 0 && workResults.length === 0) {
         if (!includeArticles && !includeWorks) {
-            html = '<div class="search-result-item">请选择至少一个搜索类别</div>';
+            html = `<div class="search-result-item">${'请选择至少一个搜索类别'}</div>`;
         } else {
-            html = '<div class="search-result-item">没有找到相关内容</div>';
+            html = `<div class="search-result-item">${'没有找到相关内容'}</div>`;
         }
     }
 
@@ -837,10 +860,365 @@ function toggleTheme() {
     }
 }
 
+// 书影音数据
+const mediaData = {
+    books: [
+        {
+            id: 1,
+            title: '人类简史：从动物到上帝',
+            author: '尤瓦尔·赫拉利',
+            year: '2024',
+            rating: 4.5,
+            category: '历史',
+            review: '一本让人重新思考人类发展历程的著作，从认知革命到科技革命，作者用独特的视角审视了人类文明的发展轨迹。'
+        },
+        {
+            id: 2,
+            title: '三体',
+            author: '刘慈欣',
+            year: '2024',
+            rating: 5,
+            category: '科幻',
+            review: '硬科幻的巅峰之作，不仅展现了宏大的宇宙观，更深入探讨了人性、文明与生存的终极问题。'
+        },
+        {
+            id: 3,
+            title: '禅与摩托车维修艺术',
+            author: '罗伯特·波西格',
+            year: '2023',
+            rating: 4.8,
+            category: '哲学',
+            review: '一次关于质量、价值和意义的深度探索，通过摩托车维修之旅，重新审视现代生活的本质。'
+        }
+    ],
+    movies: [
+        {
+            id: 1,
+            title: '星际穿越',
+            director: '克里斯托弗·诺兰',
+            year: '2024',
+            rating: 5,
+            category: '科幻',
+            review: '诺兰的科幻巨作，将父女情深与宇宙探索完美结合，视觉效果震撼，情感内核动人。'
+        },
+        {
+            id: 2,
+            title: '肖申克的救赎',
+            director: '弗兰克·德拉邦特',
+            year: '2023',
+            rating: 5,
+            category: '剧情',
+            review: '关于希望与自由的经典之作，每一个镜头都充满深意，是一部值得反复品味的电影。'
+        },
+        {
+            id: 3,
+            title: '千与千寻',
+            director: '宫崎骏',
+            year: '2024',
+            rating: 4.9,
+            category: '动画',
+            review: '宫崎骏的奇幻世界，不仅是对童年记忆的追寻，更是对成长与失去的深刻思考。'
+        }
+    ],
+    music: [
+        {
+            id: 1,
+            title: '月光奏鸣曲',
+            artist: '贝多芬',
+            year: '2024',
+            rating: 5,
+            category: '古典',
+            review: '贝多芬最具代表性的钢琴奏鸣曲之一，月光般柔美的旋律中蕴含着深沉的情感。'
+        },
+        {
+            id: 2,
+            title: 'Hotel California',
+            artist: 'Eagles',
+            year: '2023',
+            rating: 4.7,
+            category: '摇滚',
+            review: '经典的摇滚名曲，吉他独奏堪称传奇，歌词充满了对美国梦的反思与批判。'
+        },
+        {
+            id: 3,
+            title: 'River Flows in You',
+            artist: 'Yiruma',
+            year: '2024',
+            rating: 4.6,
+            category: '新世纪',
+            review: '治愈系的钢琴曲，如流水般温柔的旋律，能够抚慰内心的疲惫与焦虑。'
+        }
+    ]
+};
+
+// 工具推荐数据
+const toolsData = [
+    {
+        id: 1,
+        name: 'Visual Studio Code',
+        category: '代码编辑器',
+        icon: '💻',
+        description: '轻量级但功能强大的代码编辑器，支持丰富的插件生态，是现代开发的首选工具。智能代码补全、调试功能和集成终端让编程效率大幅提升。',
+        tags: ['编程', '免费', '跨平台', '插件丰富'],
+        website: 'https://code.visualstudio.com'
+    },
+    {
+        id: 2,
+        name: 'Notion',
+        category: '笔记管理',
+        icon: '📝',
+        description: '全能型工作空间，将笔记、任务管理、数据库完美融合。灵活的块编辑器和强大的模板系统，让知识管理变得简单而高效。',
+        tags: ['笔记', '任务管理', '协作', '数据库'],
+        website: 'https://notion.so'
+    },
+    {
+        id: 3,
+        name: 'Obsidian',
+        category: '知识管理',
+        icon: '🧠',
+        description: '基于本地文件的双向链接笔记工具，让你构建自己的知识网络。Markdown支持、插件生态和图谱视图，是深度思考的理想伴侣。',
+        tags: ['笔记', '双向链接', '本地存储', '图谱'],
+        website: 'https://obsidian.md'
+    },
+    {
+        id: 4,
+        name: 'Figma',
+        category: '设计工具',
+        icon: '🎨',
+        description: '基于浏览器的协作设计工具，实时协作功能让团队能够无缝配合。强大的组件系统和原型功能，从概念到交付一站式解决。',
+        tags: ['UI设计', '协作', '原型', '免费'],
+        website: 'https://figma.com'
+    },
+    {
+        id: 5,
+        name: 'Alfred',
+        category: '效率工具',
+        icon: '⚡',
+        description: 'macOS平台的强大启动器，通过热键快速启动应用、搜索文件、执行系统命令。工作流和脚本功能让日常操作自动化。',
+        tags: ['启动器', '自动化', 'macOS', '效率'],
+        website: 'https://alfredapp.com'
+    },
+    {
+        id: 6,
+        name: 'Raycast',
+        category: '效率工具',
+        icon: '🚀',
+        description: '现代化的macOS启动器，优雅的界面设计和强大的扩展生态。集成了AI搜索、剪贴板管理、快捷操作等功能。',
+        tags: ['启动器', 'AI搜索', '剪贴板', 'macOS'],
+        website: 'https://raycast.com'
+    }
+];
+
+// 渲染书影音页面
+function renderMediaGrid() {
+    let html = '';
+    const t = translations[currentLang];
+
+    // 书籍部分
+    html += `
+        <div class="media-section">
+            <h3 class="media-section-title">
+                <span>📚</span>
+                ${'书籍'}
+            </h3>
+            <div class="media-list">
+    `;
+
+    mediaData.books.forEach(book => {
+        html += `
+            <div class="media-item" onclick="openMediaDetail('book', ${book.id})">
+                <div class="media-icon">📖</div>
+                <div class="media-info">
+                    <div class="media-title">${book.title}</div>
+                    <div class="media-meta">${'作者'}：${book.author} · ${book.year} · ${book.category}</div>
+                    <div class="media-rating">⭐ ${book.rating}</div>
+                    <div class="media-review">${book.review}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    // 电影部分
+    html += `
+        <div class="media-section">
+            <h3 class="media-section-title">
+                <span>🎬</span>
+                ${'电影'}
+            </h3>
+            <div class="media-list">
+    `;
+
+    mediaData.movies.forEach(movie => {
+        html += `
+            <div class="media-item" onclick="openMediaDetail('movie', ${movie.id})">
+                <div class="media-icon">🎥</div>
+                <div class="media-info">
+                    <div class="media-title">${movie.title}</div>
+                    <div class="media-meta">${'导演'}：${movie.director} · ${movie.year} · ${movie.category}</div>
+                    <div class="media-rating">⭐ ${movie.rating}</div>
+                    <div class="media-review">${movie.review}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    // 音乐部分
+    html += `
+        <div class="media-section">
+            <h3 class="media-section-title">
+                <span>🎵</span>
+                ${'音乐'}
+            </h3>
+            <div class="media-list">
+    `;
+
+    mediaData.music.forEach(music => {
+        html += `
+            <div class="media-item" onclick="openMediaDetail('music', ${music.id})">
+                <div class="media-icon">🎧</div>
+                <div class="media-info">
+                    <div class="media-title">${music.title}</div>
+                    <div class="media-meta">${'艺术家'}：${music.artist} · ${music.year} · ${music.category}</div>
+                    <div class="media-rating">⭐ ${music.rating}</div>
+                    <div class="media-review">${music.review}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    mediaGrid.innerHTML = html;
+}
+
+// 渲染工具页面
+function renderToolsGrid() {
+    let html = '';
+
+    toolsData.forEach(tool => {
+        html += `
+            <div class="tool-item" onclick="openToolDetail(${tool.id})">
+                <div class="tool-header">
+                    <div class="tool-icon">${tool.icon}</div>
+                    <div class="tool-info">
+                        <div class="tool-name">${tool.name}</div>
+                        <span class="tool-category">${tool.category}</span>
+                    </div>
+                </div>
+                <div class="tool-description">${tool.description}</div>
+                <div class="tool-tags">
+                    ${tool.tags.map(tag => `<span class="tool-tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    toolsGrid.innerHTML = html;
+}
+
+// 打开书影音详情
+function openMediaDetail(type, id) {
+    let item;
+    let categoryTitle;
+
+    switch(type) {
+        case 'book':
+            item = mediaData.books.find(b => b.id === id);
+            categoryTitle = '📚 书籍';
+            break;
+        case 'movie':
+            item = mediaData.movies.find(m => m.id === id);
+            categoryTitle = '🎬 电影';
+            break;
+        case 'music':
+            item = mediaData.music.find(m => m.id === id);
+            categoryTitle = '🎵 音乐';
+            break;
+    }
+
+    if (!item) return;
+
+    // 填充详情内容
+    document.getElementById('detail-title').textContent = getText(item.title);
+    document.getElementById('detail-category').textContent = categoryTitle;
+    document.getElementById('detail-time').textContent = item.year;
+
+    let contentHtml = '';
+    if (type === 'book') {
+        contentHtml = `<p><strong>${'作者'}：</strong>${getText(item.author)}</p><p><strong>${'分类'}：</strong>${getText(item.category)}</p><p><strong>${'评分'}：</strong>⭐ ${item.rating}</p><p>${getText(item.review)}</p>`;
+    } else if (type === 'movie') {
+        contentHtml = `<p><strong>${'导演'}：</strong>${getText(item.director)}</p><p><strong>${'分类'}：</strong>${getText(item.category)}</p><p><strong>${'评分'}：</strong>⭐ ${item.rating}</p><p>${getText(item.review)}</p>`;
+    } else if (type === 'music') {
+        contentHtml = `<p><strong>${'艺术家'}：</strong>${getText(item.artist)}</p><p><strong>${'分类'}：</strong>${getText(item.category)}</p><p><strong>${'评分'}：</strong>⭐ ${item.rating}</p><p>${getText(item.review)}</p>`;
+    }
+
+    document.getElementById('detail-content').innerHTML = contentHtml;
+    document.getElementById('detail-source').textContent = `${'记录年份：'}${item.year}`;
+
+    // 设置图片背景
+    const imageElement = document.getElementById('detail-image');
+    if (type === 'book') {
+        imageElement.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    } else if (type === 'movie') {
+        imageElement.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+    } else {
+        imageElement.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+    }
+
+    // 显示详情页面
+    articleDetail.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    articleDetail.scrollTop = 0;
+}
+
+// 打开工具详情
+function openToolDetail(toolId) {
+    const tool = toolsData.find(t => t.id === toolId);
+    if (!tool) return;
+
+    // 填充详情内容
+    document.getElementById('detail-title').textContent = tool.name;
+    document.getElementById('detail-category').textContent = `🛠️ ${tool.category}`;
+    document.getElementById('detail-time').textContent = '';
+
+    const contentHtml = `
+        <p><strong>${'分类'}：</strong>${tool.category}</p>
+        <p>${tool.description}</p>
+        <p><strong>${'官网'}：</strong><a href="${tool.website}" target="_blank" style="color: var(--text-primary);">${tool.website}</a></p>
+    `;
+
+    document.getElementById('detail-content').innerHTML = contentHtml;
+    document.getElementById('detail-source').textContent = `${'标签：'}${tool.tags.map(tag => tag).join(', ')}`;
+
+    // 设置图片背景
+    const imageElement = document.getElementById('detail-image');
+    imageElement.style.background = 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)';
+
+    // 显示详情页面
+    articleDetail.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    articleDetail.scrollTop = 0;
+}
+
 // 导出函数供外部使用
 window.BlogApp = {
     openArticle,
     openWork,
     navigateToPage,
-    toggleTheme
+    toggleTheme,
+    openMediaDetail,
+    openToolDetail
 };

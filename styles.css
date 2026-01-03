@@ -17,7 +17,7 @@
     --surface: #fafafa;
     --border: #e5e5e5;
     --border-light: #f0f0f0;
-    --max-width: 680px;
+    --max-width: 1200px;
     --header-font: 'Playfair Display', 'Georgia', serif;
     --body-font: 'Lora', 'Georgia', serif;
     --ui-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -49,7 +49,7 @@ body {
     transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-/* 头部导航 - 极简设计 */
+/* 头部导航 - 三段式布局设计 */
 .header {
     position: fixed;
     top: 0;
@@ -61,37 +61,47 @@ body {
     transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
 
-.header-content {
-    max-width: var(--max-width);
+.header-container {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* 左侧：Logo */
+.header-left {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
 .logo h1 {
     font-family: var(--header-font);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 500;
     color: var(--text-primary);
     letter-spacing: 0.01em;
     cursor: pointer;
     transition: opacity var(--transition-speed);
-    margin-left: -10px;
     font-style: italic;
+    white-space: nowrap;
 }
 
 .logo h1:hover {
     opacity: 0.7;
 }
 
-.nav {
+/* 中间：主导航 */
+.header-center {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 2rem;
 }
 
-.nav-link {
+.header-center .nav-link {
     font-family: var(--ui-font);
     color: var(--text-secondary);
     text-decoration: none;
@@ -99,22 +109,24 @@ body {
     font-weight: 400;
     transition: color var(--transition-speed);
     outline: none;
+    white-space: nowrap;
 }
 
-.nav-link:focus {
+.header-center .nav-link:focus {
     outline: none;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.header-center .nav-link:hover,
+.header-center .nav-link.active {
     color: var(--text-primary);
 }
 
-.header-actions {
+/* 右侧：操作按钮 */
+.header-right {
     display: flex;
-    gap: 1rem;
+    justify-content: flex-end;
     align-items: center;
-    margin-right: -10px;
+    gap: 0.75rem;
 }
 
 .search-btn,
@@ -202,9 +214,15 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
-    border-radius: 8px;
+    border-radius: 50%;
     transition: all var(--transition-speed);
     margin-left: 1rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .search-close:hover {
@@ -338,8 +356,9 @@ body {
     right: 0;
     background-color: var(--background);
     z-index: 10;
-    padding: 1.5rem 1rem;
+    padding: 3rem 1rem;
     margin: 0;
+    transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .posts-controls {
@@ -360,8 +379,14 @@ body {
     color: var(--text-secondary);
     padding: 0.4rem 0.8rem;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 1rem;
     transition: color var(--transition-speed);
+    outline: none;
+}
+
+.sort-btn:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 .sort-btn:hover {
@@ -376,7 +401,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 60px;
+    margin-top: 120px;
 }
 
 .post-item {
@@ -385,8 +410,8 @@ body {
     cursor: pointer;
     transition: all var(--transition-speed);
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .post-item:last-child {
@@ -397,21 +422,31 @@ body {
     opacity: 0.8;
 }
 
+.post-item-date {
+    font-family: var(--header-font);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    min-width: 80px;
+}
+
 .post-item-title {
     font-family: var(--header-font);
     font-size: 1rem;
     font-weight: 500;
     color: var(--text-primary);
     flex: 1;
+    text-align: center;
     line-height: 1.4;
 }
 
-.post-item-date {
-    font-family: var(--header-font);
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-left: 2rem;
+.post-item-category {
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
     white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
 }
 
 
@@ -473,7 +508,8 @@ body {
 .work-item {
     position: relative;
     width: 100%;
-    height: 320px;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 比例 */
     overflow: hidden;
     border-radius: 8px;
     cursor: pointer;
@@ -482,6 +518,9 @@ body {
 }
 
 .work-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -511,6 +550,199 @@ body {
     font-size: 0.95rem;
     line-height: 1.6;
     opacity: 0.9;
+}
+
+/* 页面标题样式 */
+.content-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+}
+
+.page-title {
+    font-family: var(--header-font);
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.page-subtitle {
+    font-family: var(--body-font);
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 书影音页面样式 */
+.media-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.media-section {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+}
+
+.media-section-title {
+    font-family: var(--header-font);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.media-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.media-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: background-color var(--transition-speed);
+    cursor: pointer;
+}
+
+.media-item:hover {
+    background-color: var(--border-light);
+}
+
+.media-icon {
+    font-size: 1.5rem;
+    min-width: 40px;
+    text-align: center;
+}
+
+.media-info {
+    flex: 1;
+}
+
+.media-title {
+    font-family: var(--header-font);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.media-meta {
+    font-family: var(--ui-font);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.media-rating {
+    color: #f59e0b;
+    font-size: 0.9rem;
+}
+
+.media-review {
+    font-family: var(--body-font);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+}
+
+/* 工具页面样式 */
+.tools-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.tool-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all var(--transition-speed);
+    cursor: pointer;
+}
+
+.tool-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tool-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--border-light), var(--border));
+}
+
+.tool-info {
+    flex: 1;
+}
+
+.tool-name {
+    font-family: var(--header-font);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.tool-category {
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--background);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: inline-block;
+}
+
+.tool-description {
+    font-family: var(--body-font);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-top: 1rem;
+}
+
+.tool-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.tool-tag {
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    color: var(--text-light);
+    background: var(--border-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
 }
 
 /* About 页面样式 */
@@ -687,15 +919,18 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
+    .header-container {
+        grid-template-columns: 1fr auto;
         gap: 1rem;
-        text-align: center;
         padding: 1rem;
     }
 
-    .nav {
-        gap: 1.5rem;
+    .header-center {
+        display: none; /* 在移动端可以添加汉堡菜单 */
+    }
+
+    .header-right {
+        gap: 0.5rem;
     }
 
     .content-wrapper {
@@ -735,6 +970,16 @@ body {
 
     .social-links {
         gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0.75rem 1rem;
+    }
+
+    .logo h1 {
+        font-size: 1rem;
     }
 }
 
