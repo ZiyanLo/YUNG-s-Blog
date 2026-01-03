@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部署测试 - YUNG's Blog</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .status {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success {
+            color: #00ff00;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 10px 0 0;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ 部署成功！</h1>
+
+        <div class="status">
+            <div class="success">🎉 Cloudflare Pages 部署测试页面</div>
+            <p>如果您看到这个页面，说明 Cloudflare Pages 已经成功部署了您的新文件！</p>
+        </div>
+
+        <div class="info">
+            <h3>📋 文件检查清单：</h3>
+            <ul>
+                <li>✅ <code>deployment-test.html</code> - 本测试页面</li>
+                <li>✅ <code>index.html</code> - 主页面</li>
+                <li>✅ <code>styles.css</code> - 样式文件</li>
+                <li>✅ <code>script.js</code> - 脚本文件</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>🔗 测试链接：</h3>
+            <a href="index.html" class="btn">访问博客首页 →</a>
+            <a href="https://github.com/ZiyanLo/YUNG-s-Blog" class="btn">查看源码 →</a>
+        </div>
+
+        <div class="info">
+            <h3>📝 如果您仍然看到 "Hello World"：</h3>
+            <ol>
+                <li>按 <code>Ctrl+F5</code> (Windows) 或 <code>Cmd+Shift+R</code> (Mac) 强制刷新浏览器</li>
+                <li>清除浏览器缓存</li>
+                <li>确认 URL 是：<code>yungs-blog.pages.dev</code></li>
+                <li>检查 Cloudflare Pages 是否有多个项目</li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>⚙️ 正确的 Cloudflare Pages 配置：</h3>
+            <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; overflow-x: auto;">
+Root directory: /
+Build command: (留空)
+Build output directory: /</pre>
+        </div>
+    </div>
+</body>
+</html>
